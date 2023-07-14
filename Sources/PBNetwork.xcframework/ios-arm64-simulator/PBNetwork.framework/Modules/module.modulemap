@@ -1,0 +1,11 @@
+framework module PBNetwork {
+  umbrella header "PBNetwork.h"
+
+  export *
+  module * { export * }
+}
+
+module PBNetwork.Swift {
+  header "PBNetwork-Swift.h"
+  requires objc
+}
