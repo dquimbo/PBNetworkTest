@@ -1,0 +1,761 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)
+// swift-module-flags: -target arm64-apple-ios12.1-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name PBNetwork
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import CoreLocation
+import CoreMotion
+import Foundation
+import MapKit
+import MediaPlayer
+import PBBluetooth
+@_exported import PBNetwork
+import Photos
+import Realm/*.Realm*/
+import RealmSwift
+import RxSwift
+import Swift
+import UserNotifications
+import _Concurrency
+import _StringProcessing
+@_hasMissingDesignatedInitializers public class DeviceManager {
+  public static var shared: PBNetwork.DeviceManager
+  public var allDevices: [PBNetwork.Device] {
+    get
+  }
+  public func marryNotificationPackage(_ theNotification: Foundation.Notification) -> PBNetwork.Device?
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBToken : RealmSwift.Object {
+  @objc dynamic public var token: Swift.String!
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBContact : RealmSwift.Object {
+  @objc dynamic public var phoneNumber: Swift.String? {
+    get
+  }
+  @objc dynamic public var countryCode: Swift.String? {
+    get
+  }
+  @objc public var action: PBNetwork.PBTwilioSMSSendAction? {
+    @objc get
+  }
+  @objc public func addPhoneNumber(newNumber n: Swift.String) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBLocation : RealmSwift.Object {
+  @objc dynamic public var timeStamp: Foundation.Date! {
+    get
+  }
+  @objc public var timeStampSeconds: Swift.Double {
+    @objc get
+  }
+  @objc public var timeStampMilliseconds: Swift.Double {
+    @objc get
+  }
+  @objc public var timeAgo: Swift.String {
+    @objc get
+  }
+  @objc dynamic public var uploaded: Swift.Bool {
+    get
+  }
+  @objc dynamic public var historic: Swift.Bool {
+    get
+  }
+  @objc dynamic public var locationDescription: Swift.String? {
+    get
+  }
+  @objc public var coordinates: CoreLocation.CLLocationCoordinate2D {
+    @objc get
+  }
+  public var deviceSnapShot: RealmSwift.List<PBNetwork.Device> {
+    get
+  }
+  @objc public var inRangeDevicesArray: [Swift.String] {
+    @objc get
+  }
+  public func updateLocationReading(withLocationReading l: PBBluetooth.PBLocationReading)
+  @objc public func updateLocation(withTimeStamp T: Foundation.Date, latitude lat: Swift.Double, longitude long: Swift.Double)
+  @objc public func getJSONStructure() -> [Swift.String : Any]
+  @objc public func buildJSON(startIndex startDevice: Swift.Int, endIndex endDevice: Swift.Int) -> [Swift.String : Swift.AnyObject]
+  @objc public func pullLocationDescription(completion: @escaping (_ description: Swift.String?) -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBAlexaNetworkController : PBNetwork.PBNetworker {
+  public func useAlexaCode(_ code: Swift.String, forUser u: PBNetwork.PBUser, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBURLSessionAction : RealmSwift.Object {
+  @objc override dynamic open class func primaryKey() -> Swift.String?
+  @objc dynamic public var requestURLString: Swift.String? {
+    get
+  }
+  public var httpMethod: PBNetwork.PBHTTPMethodType {
+    get
+    set
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  convenience public init(withRequestURL requestURL: Swift.String?, httpMethod: PBNetwork.PBHTTPMethodType)
+  @objc public func newRequestURL(newURL url: Swift.String) throws
+  @objc open func run()
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBLocationController : PBNetwork.PBNetworker {
+  @objc public static let shared: PBNetwork.PBLocationController
+  public var currentLocation: PBBluetooth.PBLocationReading? {
+    get
+  }
+  @objc public var numberOfAllowedLocationPoints: Swift.Int
+  @objc public var locationList: [PBNetwork.PBLocation] {
+    get
+  }
+  @objc override dynamic public init()
+  @objc public func getLocations() -> [PBNetwork.PBLocation]
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBIFTTTAction : RealmSwift.Object {
+  @objc override dynamic open class func primaryKey() -> Swift.String?
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  @objc public func run()
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class PBPushController {
+  public static let sharedController: PBNetwork.PBPushController
+  public func gulpToken(forUser u: PBNetwork.PBUser, token t: Foundation.Data)
+  public func gulpRemoteNotificationPackage(package p: [Swift.AnyHashable : Any], completion: @escaping (_ didComplete: Swift.Bool) -> Swift.Void)
+  public func gulpLocalNotificationPackage(response notificationResponse: UserNotifications.UNNotificationResponse)
+  @objc deinit
+}
+public enum PlaybackStateUpdate : Swift.Int {
+  case togglePlaying
+  case skipForward
+  case skipBackward
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @available(iOS 9.3, *)
+public class PBMusicPlaybackAction : RealmSwift.Object {
+  public var playbackStateUpdate: PBNetwork.PlaybackStateUpdate {
+    get
+    set
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  convenience public init(withPlaybackStateUpdate playbackStateUpdate: PBNetwork.PlaybackStateUpdate)
+  @objc public func run()
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+public enum SoundType : Swift.Int, Swift.CaseIterable {
+  case jingle
+  case siren
+  case arpeggio
+  case guitar
+  case piano
+  case breakbeat
+  case vibrate
+  public var soundName: Swift.String {
+    get
+  }
+  public var soundURL: Foundation.URL? {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [PBNetwork.SoundType]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [PBNetwork.SoundType] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class PBSoundPlaybackAction : RealmSwift.Object {
+  @objc override dynamic open class func primaryKey() -> Swift.String?
+  public var soundType: PBNetwork.SoundType! {
+    get
+    set
+  }
+  @objc dynamic public var overrideMasterVolume: Swift.Bool {
+    get
+  }
+  @objc dynamic public var routeToMainSpeaker: Swift.Bool {
+    get
+  }
+  @objc dynamic public var ignoreMuteSwitch: Swift.Bool {
+    get
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  convenience public init?(withSoundType soundType: PBNetwork.SoundType)
+  @objc public func overrideMasterVolume(_ override: Swift.Bool) throws
+  @objc public func routeToMainSpeaker(_ setToSpeaker: Swift.Bool) throws
+  @objc public func ignoreMuteSwitch(_ ignoreSwitch: Swift.Bool) throws
+  @objc public func run(rawTriggerType: Swift.Int = PBTriggerType.unknown.rawValue, device: PBNetwork.Device? = nil)
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  open class func sampleSound(_ theSound: PBNetwork.SoundType, overrideVolume: Swift.Bool, overrideSpeaker: Swift.Bool, ignoreMute: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class PBPlayer : ObjectiveC.NSObject {
+  public static let sharedInstance: PBNetwork.PBPlayer
+  public var sharedAudioPlayer: AVFAudio.AVAudioPlayer?
+  @objc open func audioSessionRouteChanged(_ notification: Foundation.Notification)
+  @objc open func audioSessionInterrupted(_ notification: Foundation.Notification)
+  public func stopVibration()
+  public func playVibration()
+  @objc deinit
+}
+extension PBNetwork.PBSoundPlaybackAction {
+  public static func soundTypeAsString(_ type: PBNetwork.SoundType) -> Swift.String
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class PBLoginManager : PBNetwork.PBNetworker {
+  public static let shared: PBNetwork.PBLoginManager
+  public func login(email: Swift.String, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func verifyCode(forUser user: PBNetwork.PBUser, code: Swift.String, completion: @escaping (_ error: PBNetwork.PBVerificationError?) -> Swift.Void)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class Device : RealmSwift.Object {
+  @objc dynamic public var macAddress: Swift.String! {
+    get
+  }
+  @objc dynamic public var name: Swift.String? {
+    get
+  }
+  @objc dynamic public var lastSeen: Foundation.Date? {
+    get
+  }
+  @objc dynamic public var lastLocationDevice: PBNetwork.PBLocation? {
+    get
+  }
+  @objc dynamic public var lastLocationDeviceFound: PBNetwork.PBLocation? {
+    get
+  }
+  @objc dynamic public var inRange: Swift.Bool {
+    get
+  }
+  @objc dynamic public var isLost: Swift.Bool {
+    get
+  }
+  @objc dynamic public var tag: Swift.String? {
+    get
+  }
+  @objc dynamic public var volume: Swift.Int {
+    get
+  }
+  @objc dynamic public var soundEnum: Swift.Int {
+    get
+  }
+  public var type: PBBluetooth.PBDeviceType {
+    get
+    set(newValue)
+  }
+  public var triggers: RealmSwift.List<PBNetwork.PBTrigger> {
+    get
+  }
+  @objc public var typeAsString: Swift.String {
+    @objc get
+  }
+  @objc public var underlyingHardware: PBBluetooth.PBDevice? {
+    @objc get
+  }
+  @objc override public static func primaryKey() -> Swift.String?
+  @objc public var lastLocation: PBNetwork.PBLocation? {
+    @objc get
+  }
+  @objc public var lastLocationFound: PBNetwork.PBLocation? {
+    @objc get
+  }
+  public func updateNameWithoutNetwork(_ name: Swift.String)
+  public func updateName(_ name: Swift.String, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func updateTag(_ tag: Swift.String, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func markAsLost(isLost l: Swift.Bool, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func getTrigger(ofType T: PBNetwork.PBTriggerType) -> PBNetwork.PBTrigger?
+  public func updateLastLocation(lastLocation: PBBluetooth.PBLocationReading) throws
+  @objc public func setLastLocationFound(withTimeStamp T: Foundation.Date, latitude lat: Swift.Double, longitude long: Swift.Double) throws
+  @objc public func specialActionActivated() -> Swift.Bool
+  public func cloudSync(completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func setVolume(volumeSetting volumeValue: Swift.Int, completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  public func setSound(soundSetting soundValue: Swift.Int, completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PBNetwork.Device {
+  public func resetDevice(completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  public func getIMEI(completion: @escaping (_ imei: Swift.String?, _ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  public static func find(aFinder finder: PBNetwork.Device, options: PBBluetooth.PBFinderFindOptions, completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  public static func cancelfind(aFinder finder2: PBNetwork.Device, completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  public static func cancelFind(aFound found: PBNetwork.Device, completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+  public static func find(aHoney honey: PBNetwork.Device, options: PBBluetooth.PBHoneyFindOptions, completion: @escaping (_ error: PBNetwork.DeviceFindError?) -> Swift.Void)
+}
+@_hasMissingDesignatedInitializers public class PBMotionMananger {
+  public static let shared: PBNetwork.PBMotionMananger
+  public func startActivityUpdates()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBUser : RealmSwift.Object {
+  @objc dynamic public var name: Swift.String? {
+    get
+  }
+  @objc dynamic public var email: Swift.String! {
+    get
+  }
+  @objc dynamic public var authenticated: Swift.Bool {
+    get
+  }
+  public var devices: RealmSwift.List<PBNetwork.Device> {
+    get
+  }
+  @objc dynamic public var token: PBNetwork.PBToken?
+  @objc dynamic public var APNSSandboxToken: Swift.String? {
+    get
+  }
+  @objc dynamic public var APNSToken: Swift.String? {
+    get
+  }
+  @objc convenience public init?(withEmail e: Swift.String)
+  @objc public func updateName(newName n: Swift.String)
+  public func addNewDevice(theDevice d: PBNetwork.Device, withName name: Swift.String?, completion: @escaping (_ error: PBNetwork.DeviceClaimError?) -> Swift.Void)
+  public func removeDevice(macAddress: Swift.String, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func removeDeviceWithoutNetwork(device: PBNetwork.Device, completion: @escaping (_ Error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func removeDevice(theDeviceToRemove device: PBNetwork.Device, completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func cloudSync(completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  public func pushToCloud(completion: @escaping (_ error: PBNetwork.PBNetworkError?) -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PBNetwork.PBUser {
+  public static func loggedInUser() -> PBNetwork.PBUser?
+  public static func updateAPNs(_ deviceToken: Swift.String = "apns_token")
+  public static func logOut() throws
+}
+@_hasMissingDesignatedInitializers public class PBConfiguration {
+  public static let defaultConfiguration: PBNetwork.PBConfiguration?
+  public var MAC_Set: [Swift.String] {
+    get
+  }
+  public var webServiceDebugMode: Swift.Bool? {
+    get
+  }
+  public var useStageNetwork: Swift.Bool
+  public var schemaVersion: Swift.UInt64 {
+    get
+  }
+  public var dbSizeAtLaunch: Swift.Double? {
+    get
+  }
+  public func setApplicationData(appID: Swift.String, phoneID: Swift.String, appVersion: Swift.String, phoneMeta: Swift.String)
+  public func enableStageNetwork(_ enable: Swift.Bool)
+  public func setWebServiceDebugMode(_ mode: Swift.Bool)
+  public func checkRealmFileSize() -> Swift.Double?
+  public func checkForCompact(force F: Swift.Bool)
+  public func initSpecialMAC()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBCoupon : RealmSwift.Object {
+  @objc dynamic public var title: Swift.String? {
+    get
+  }
+  @objc dynamic public var advertisement: Swift.String? {
+    get
+  }
+  @objc dynamic public var deal: Swift.String? {
+    get
+  }
+  @objc dynamic public var image_url: Swift.String? {
+    get
+  }
+  @objc dynamic public var redirect_url: Swift.String? {
+    get
+  }
+  @objc dynamic public var local_image_url: Swift.String? {
+    get
+  }
+  @objc dynamic public var read: Swift.Bool {
+    get
+  }
+  @objc dynamic public var expires: Foundation.Date? {
+    get
+  }
+  @objc public var localImage: Foundation.URL? {
+    @objc get
+  }
+  @objc public var remoteImage: Foundation.URL? {
+    @objc get
+  }
+  @objc public var redirectURL: Foundation.URL? {
+    @objc get
+  }
+  @objc convenience public init?(withJSONPackage JSON: [Swift.String : Any])
+  @objc public func crushJSON(_ JSON: [Swift.String : Any])
+  @objc public func siphonJSON() -> [Swift.String : Any]
+  @objc public func markAsRead() throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBTwilioSMSSendAction : RealmSwift.Object {
+  @objc override dynamic public class func primaryKey() -> Swift.String?
+  public var contacts: RealmSwift.List<PBNetwork.PBContact> {
+    get
+  }
+  @objc dynamic public var message: Swift.String? {
+    get
+  }
+  @objc dynamic public var senderInfo: Swift.String? {
+    get
+  }
+  @objc dynamic public var drivingRouteDescription: Swift.String {
+    get
+  }
+  public var destination: CoreLocation.CLLocationCoordinate2D? {
+    get
+  }
+  @objc override public static func ignoredProperties() -> [Swift.String]
+  @objc dynamic public var destinationDescription: Swift.String? {
+    get
+  }
+  @objc dynamic public var includeCurrentLocationMapLink: Swift.Bool {
+    get
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  @objc convenience public init?(_ withRecipients: [Swift.String], message: Swift.String?, senderInfo: Swift.String?)
+  @objc open func addRecipient(_ newValue: Swift.String) throws
+  @objc public func setIncludeLocation(includeLocation include: Swift.Bool) throws
+  @objc public func removeRecipient(recipientToRemove r: PBNetwork.PBContact, completion: @escaping (_ didComplete: Swift.Bool) -> Swift.Void)
+  @objc public func setMessage(_ newValue: Swift.String) throws
+  @objc open func setSenderInfo(_ newValue: Swift.String) throws
+  @objc public func removeDestination() throws
+  @objc public func setDestination(newDestination d: CoreLocation.CLLocationCoordinate2D) throws
+  @objc open func run()
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PBNetwork.PBTwilioSMSSendAction : Foundation.XMLParserDelegate {
+  @objc dynamic public func parser(_ parser: Foundation.XMLParser, didStartElement elementName: Swift.String, namespaceURI: Swift.String?, qualifiedName qName: Swift.String?, attributes attributeDict: [Swift.String : Swift.String])
+  @objc dynamic public func parser(_ parser: Foundation.XMLParser, foundCharacters string: Swift.String)
+  @objc dynamic public func parser(_ parser: Foundation.XMLParser, didEndElement elementName: Swift.String, namespaceURI: Swift.String?, qualifiedName qName: Swift.String?)
+  @objc dynamic public func parser(_ parser: Foundation.XMLParser, parseErrorOccurred parseError: any Swift.Error)
+}
+@_hasMissingDesignatedInitializers public class PBCouponController {
+  public static let shared: PBNetwork.PBCouponController
+  public var numberOfAllowedCoupons: Swift.Int
+  public func getCoupons() -> [PBNetwork.PBCoupon]
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBCameraRemoteAction : RealmSwift.Object {
+  @objc dynamic public var usesFrontCamera: Swift.Bool {
+    get
+  }
+  @objc dynamic public var countdownDuration: Swift.Int {
+    get
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  @objc convenience public init?(usesFrontCamera: Swift.Bool, countdownDuration: Swift.Int = 0)
+  @objc public func useFrontCamera(_ newValue: Swift.Bool) throws
+  @objc open func setCountdownDuration(_ newValue: Swift.Int) throws
+  @objc public func run()
+  @objc open func countedDown(_ sender: Foundation.Timer)
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class PBSynapse {
+  public static let root: PBNetwork.PBSynapse
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class PBTransactionController {
+  public static let shared: PBNetwork.PBTransactionController
+  public var numberOfAllowedTransactions: Swift.Int
+  public var allowedAgeOfTransactions: Foundation.Date
+  public func getTransactionHistory() -> [PBNetwork.PBTransaction]
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBPhoneCallAction : RealmSwift.Object {
+  @objc override dynamic public class func primaryKey() -> Swift.String?
+  @objc dynamic public var recipient: Swift.String {
+    get
+  }
+  @objc dynamic public var phoneNumberURLString: Swift.String? {
+    get
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var trigger: PBNetwork.PBTrigger? {
+    get
+  }
+  @objc convenience public init?(withRecipient newValue: Swift.String?)
+  @objc public func setRecipient(_ newValue: Swift.String, completion: @escaping (_ didAddReceipient: Swift.Bool) -> Swift.Void)
+  @objc open func run()
+  @objc public func enabled(_ enable: Swift.Bool) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class PBTrigger : RealmSwift.Object {
+  public var type: PBNetwork.PBTriggerType {
+    get
+    set(value)
+  }
+  @objc dynamic public var enabled: Swift.Bool {
+    get
+  }
+  @objc dynamic public var fireNotification: Swift.Bool {
+    get
+  }
+  @objc public var device: PBNetwork.Device? {
+    @objc get
+  }
+  final public let aboveTemperatureThreshold: RealmSwift.RealmOptional<Swift.Int>
+  final public let belowTemperatureThreshold: RealmSwift.RealmOptional<Swift.Int>
+  final public let calibration: RealmSwift.RealmOptional<Swift.Int>
+  @objc dynamic public var conditionDescription: Swift.String? {
+    get
+  }
+  @objc dynamic public var smartMode: Swift.Bool {
+    get
+  }
+  @objc dynamic public var soundAction: PBNetwork.PBSoundPlaybackAction? {
+    get
+  }
+  @objc dynamic public var musicPlaybackAction: PBNetwork.PBMusicPlaybackAction? {
+    get
+  }
+  @objc dynamic public var cameraRemoteAction: PBNetwork.PBCameraRemoteAction? {
+    get
+  }
+  @objc dynamic public var phoneCallAction: PBNetwork.PBPhoneCallAction? {
+    get
+  }
+  @objc dynamic public var twilioAction: PBNetwork.PBTwilioSMSSendAction? {
+    get
+  }
+  @objc dynamic public var iftttAction: PBNetwork.PBIFTTTAction? {
+    get
+  }
+  @objc dynamic public var urlAction: PBNetwork.PBURLSessionAction? {
+    get
+  }
+  @objc dynamic public var phoneLastMoved: Foundation.Date? {
+    get
+  }
+  @objc public func triggerSpecialAction()
+  @objc public func triggerTrigger()
+  public func executeAlarm()
+  @objc public func updateConditionString() throws
+  @objc public func setAboveTempThreshHold(temp t: Swift.Int)
+  @objc public func setBelowTempThreshHold(temp t: Swift.Int)
+  @objc public func setCalibrationStore(temp t: Swift.Int)
+  @objc public func enable(enable e: Swift.Bool) throws
+  @objc public func SetPhoneLastMoved(phoneLastMovedInput lastMoved: Foundation.Date)
+  @objc public func smartMode(smartModeOn: Swift.Bool) throws
+  @objc public func setFireNotification(fireNotification fire: Swift.Bool) throws
+  @objc public func lazyLoadSoundActionOnce(soundAction action: PBNetwork.PBSoundPlaybackAction?) throws
+  @objc public func lazyLoadMusicActionOnce(theAction action: PBNetwork.PBMusicPlaybackAction?) throws
+  @objc public func lazyLoadCameraActionOnce(theAction action: PBNetwork.PBCameraRemoteAction?) throws
+  @objc public func lazyLoadPhoneActionOnce(theAction action: PBNetwork.PBPhoneCallAction?) throws
+  @objc public func lazyLoadTwilioActionOnce(theAction action: PBNetwork.PBTwilioSMSSendAction?) throws
+  @objc public func lazyLoadIFTTTActionOnce(theAction action: PBNetwork.PBIFTTTAction?) throws
+  @objc public func lazyLoadURLActionOnce(theAction action: PBNetwork.PBURLSessionAction?) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PBNetwork.PBTrigger {
+  public static func getTypeAsVerb(_ type: PBNetwork.PBTriggerType) -> Swift.String
+}
+@objc @_inheritsConvenienceInitializers public class PBTransaction : RealmSwift.Object {
+  @objc dynamic public var transactionDate: Foundation.Date? {
+    get
+  }
+  @objc dynamic public var transactionDateString: Swift.String? {
+    get
+  }
+  @objc dynamic public var networkErrorDescription: Swift.String? {
+    get
+  }
+  @objc dynamic public var id: Swift.String? {
+    get
+  }
+  @objc dynamic public var url: Swift.String? {
+    get
+  }
+  @objc dynamic public var requestMethod: Swift.String? {
+    get
+  }
+  @objc dynamic public var headers: Swift.String? {
+    get
+  }
+  @objc dynamic public var postBody: Swift.String? {
+    get
+  }
+  @objc dynamic public var responseJSON: Swift.String? {
+    get
+  }
+  @objc dynamic public var responseStatusCode: Swift.String? {
+    get
+  }
+  @objc dynamic public var responseRawString: Swift.String? {
+    get
+  }
+  @objc dynamic public var errorRawString: Swift.String? {
+    get
+  }
+  @objc public func getPretty() -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+public var PBDebugLevel: PBNetwork.PBDebugOptions {
+  get
+  set
+}
+public let PBTextCompletionNotification: Foundation.NSNotification.Name
+public let PBURLCompletionNotification: Foundation.NSNotification.Name
+public let PBIFTTTCompleteNotification: Foundation.NSNotification.Name
+public let PBNetworkDebugNotificaiton: Foundation.NSNotification.Name
+public let PBOutOfRangeTriggerDidFireNotification: Foundation.NSNotification.Name
+public let PBSmartModeFireNotification: Foundation.NSNotification.Name
+public let PBDeviceStateChange: Foundation.NSNotification.Name
+public let PBDeviceRequestAuthorizationNotification: Foundation.NSNotification.Name
+public let PBCouponDeleveredNotification: Foundation.NSNotification.Name
+public let PBPhoneMotionEventNotification: Foundation.NSNotification.Name
+public let PBNewDevicesLoadedNotification: Foundation.NSNotification.Name
+public let PBLoginStartedNotification: Foundation.NSNotification.Name
+public let PBLoginCompletedNotification: Foundation.NSNotification.Name
+public let PBLogoutNotification: Foundation.NSNotification.Name
+public let PBDebugTitleKey: Swift.String
+public let PBDebugMessageKey: Swift.String
+public enum PBDebugOptions : Swift.Int {
+  case none
+  case some
+  case verbose
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum PBNetworkError : Swift.Error {
+  case unSynced
+  case badURL
+  case badResponse(Swift.Int?)
+  case badConfiguration
+  case badJSON
+  case requestError(error: (any Swift.Error)?)
+  case badToken
+  case failedToParseJSON
+  case realmError(error: (any Swift.Error)?)
+  case excesiveRequests
+}
+public enum PBVerificationError {
+  case badURL
+  case badResponse(Swift.Int?)
+  case badConfiguration
+  case badJSON
+  case requestError(error: (any Swift.Error)?)
+  case badToken
+  case failedToParseJSON
+  case realmError(error: (any Swift.Error)?)
+  case invalidCode
+  case expiredCode
+}
+public enum DeviceClaimError : Swift.Error {
+  case alreadyClaimed
+  case networkError(PBNetwork.PBNetworkError)
+}
+public enum DeviceFindError : Swift.Error {
+  case noDevice
+  case bluetoothError(any Swift.Error)
+}
+public enum PBHTTPMethodType : Swift.String {
+  case options
+  case get
+  case head
+  case post
+  case put
+  case delete
+  case trace
+  case connect
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum PBLogOutError : Swift.Error {
+  case realmError(error: (any Swift.Error)?)
+  case badConfiguration
+}
+public enum PBTriggerType : Swift.Int {
+  case unknown
+  case singlePress
+  case holdPress
+  case doublePress
+  case motion
+  case inRange
+  case outOfRange
+  case tempAbove
+  case tempBelow
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class PBNetworker : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PBNetwork.PlaybackStateUpdate : Swift.Equatable {}
+extension PBNetwork.PlaybackStateUpdate : Swift.Hashable {}
+extension PBNetwork.PlaybackStateUpdate : Swift.RawRepresentable {}
+extension PBNetwork.SoundType : Swift.Equatable {}
+extension PBNetwork.SoundType : Swift.Hashable {}
+extension PBNetwork.SoundType : Swift.RawRepresentable {}
+extension PBNetwork.PBDebugOptions : Swift.Equatable {}
+extension PBNetwork.PBDebugOptions : Swift.Hashable {}
+extension PBNetwork.PBDebugOptions : Swift.RawRepresentable {}
+extension PBNetwork.PBHTTPMethodType : Swift.Equatable {}
+extension PBNetwork.PBHTTPMethodType : Swift.Hashable {}
+extension PBNetwork.PBHTTPMethodType : Swift.RawRepresentable {}
+extension PBNetwork.PBTriggerType : Swift.Equatable {}
+extension PBNetwork.PBTriggerType : Swift.Hashable {}
+extension PBNetwork.PBTriggerType : Swift.RawRepresentable {}
