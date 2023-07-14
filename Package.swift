@@ -17,7 +17,7 @@ let package = Package(
             from: "6.0.0"
         ),
         .package(
-            url: "https://github.com/realm/realm-swift",
+            url: "https://github.com/realm/realm-cocoa",
             from: "10.0.0"
         ),
         .package(
@@ -35,7 +35,7 @@ let package = Package(
             name: "PBNetwokWrapper",
             dependencies: [
                 .product(name: "RxSwift", package: "rxswift"),
-                .product(name: "Realm", package: "realm-swift"),
+                .product(name: "Realm", package: "realm-cocoa"),
                 .product(name: "PBBluetooth", package: "calendarcontrol"),
                 .target(name: "PBNetworkBinary")
             ]),
